@@ -80,14 +80,20 @@ import scala.jdk.FunctionWrappers.{AsJavaBiFunction, AsJavaConsumer, AsJavaFunct
       new Query(template.render)
     }
 
-    //    Function[Query, Query] queryTranfunc = queryTranfunc.asJavaFunction
-    //    val  queryTranfun:Function[Query, Query] = queryTranfunc.asJavaFunction
-    //    val queryDocfun:BiFunction[Query, util.List[Document], Query] = queryDocFunc.asJavaBiFunction
+//        Function[Query, Query] queryTranfunc = queryTranfunc.asJavaFunction
+    val  queryTranfun:Function[Query, Query] = queryTranfunc.asJavaFunction
+    val queryDocfun:BiFunction[Query, util.List[Document], Query] = queryDocFunc.asJavaBiFunction
     val rag = RetrievalAugmentationAdvisor.builder()
       .documentRetriever(documentRetriever)
-      .queryTransformers((q: Query) => queryTranfunc(q))
-      .queryAugmenter((q, doc) => queryDocFunc(q, doc))
+      .queryTransformers(queryTranfun.asInstanceOf[QueryTransformer])
+      .queryAugmenter(queryDocfun.asInstanceOf[QueryAugmenter])
       .build
+    
+//    val rag = RetrievalAugmentationAdvisor.builder()
+//      .documentRetriever(documentRetriever)
+//      .queryTransformers((q: Query) => queryTranfunc(q))
+//      .queryAugmenter((q, doc) => queryDocFunc(q, doc))
+//      .build
     val answer = chatClient.prompt.user(question).advisors(rag).call.content
     answer
   }
