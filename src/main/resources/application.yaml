@@ -5,11 +5,32 @@ spring:
     org.springframework.ai.autoconfigure.azure.openai.AzureOpenAiAutoConfiguration
   ai:
     ollama:
+      base-url: http://10.1.10.51:11434
+        #      model: qwen2.5:7b-instruct
+      init:
+          base-url: http://10.1.10.51:11434
       chat:
-        model: llama3.1
+        model: deepseek-r1:32b  #llama3.1
         options.temperature: 0.5
-      embedding.model: llama3.1
-    vectorstore.redis.initialize-schema: true
+      embedding.model: deepseek-r1:32b #qwen2.5:7b-instruct # llama3.1
+#    vectorstore.redis.initialize-schema: true
+    vectorstor:
+      milvus:
+        client:
+          host: http://10.1.10.29
+          port: 19530
+          timeout: 10000
+          password: "milvus"
+          databaseName: "default"
+        databaseName: "default"
+        collectionName: "vector_store"
+        embeddingDimension: 1536
+        indexType: IVF_FLAT
+        metricType: COSINE
+        enable: true
+
+
+
   servlet.multipart:
     max-file-size: 100MB
     max-request-size: 100MB
@@ -18,3 +39,6 @@ server.tomcat.max-swallow-size: -1
 app:
   always-available-ingredients: wine,salt,pepper,olive oil,broth,rice
   available-ingredients-in-fridge: bacon,onions
+
+server:
+  port: 8945

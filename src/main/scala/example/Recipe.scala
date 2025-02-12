@@ -1,6 +1,6 @@
 package example
 
-case class Recipe(name: String, description: String, ingredients: Seq[String], instructions: Seq[String], imageUrl: String) {
+ case class Recipe(name: String, description: String, ingredients: Seq[String], instructions: Seq[String], imageUrl: String) {
 //  this.name = name
 //  this.description = description
 //  this.ingredients = ingredients
@@ -12,7 +12,7 @@ case class Recipe(name: String, description: String, ingredients: Seq[String], i
 //  final private val instructions: util.List[String] = null
 //  final private val imageUrl: String = null
 
-  def apply(recipe: Recipe, imageUrl: String):  Recipe = {
-    Recipe(recipe.name, recipe.description, recipe.ingredients, recipe.instructions, imageUrl)
-  }
+//  def apply(recipe: Recipe, imageUrl: String):  Recipe = {
+//    Recipe(recipe.name, recipe.description, recipe.ingredients, recipe.instructions, imageUrl)
+//  }
 }

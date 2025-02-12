@@ -1,11 +1,11 @@
-package com.vector_rag
+package vector_rag
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.vector_rag.JsonLinesDocumentWriter
+import vector_rag.JsonLinesDocumentWriter
 import org.springframework.ai.reader.tika.TikaDocumentReader
 import org.springframework.ai.transformer.splitter.TokenTextSplitter
-import org.springframework.boot.{ApplicationArguments, ApplicationRunner, SpringApplication, WebApplicationType}
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.{ApplicationArguments, ApplicationRunner, SpringApplication, WebApplicationType}
 import org.springframework.context.annotation.Bean
 
 import java.nio.file.Path

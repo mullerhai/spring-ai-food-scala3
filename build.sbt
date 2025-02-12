@@ -35,6 +35,8 @@ libraryDependencies += "org.springframework.ai" % "spring-ai-milvus-store-spring
 //libraryDependencies += "org.springframework.boot" % "spring-boot-starter-jdbc" % "3.4.2"
 //libraryDependencies += "org.springframework.boot" % "spring-boot-docker-compose" % "3.4.2"
 
+//libraryDependencies += "org.lwjgl" % "lwjgl-cuda" % "3.3.6"
+//libraryDependencies += "org.jcuda" % "jcuda" % "12.6.0"
 
 //
 //libraryDependencies += "org.bytedeco" % "javacv" % "1.5.11"

@@ -1,4 +1,4 @@
-package com.vector_rag
+package vector_rag
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.ai.document.{Document, DocumentWriter}
