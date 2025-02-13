@@ -79,22 +79,40 @@ import scala.jdk.FunctionWrappers.{AsJavaBiFunction, AsJavaConsumer, AsJavaFunct
       template.add("context", documents.stream.map((doc: Document) => doc.getContent).collect(Collectors.joining("\n\n")))
       new Query(template.render)
     }
-
-//        Function[Query, Query] queryTranfunc = queryTranfunc.asJavaFunction
     val  queryTranfun:Function[Query, Query] = queryTranfunc.asJavaFunction
     val queryDocfun:BiFunction[Query, util.List[Document], Query] = queryDocFunc.asJavaBiFunction
-    val rag = RetrievalAugmentationAdvisor.builder()
+    val tranFunc = new QueryTransformer{
+      override def apply(query: Query): Query = queryTranfun.apply(query) //queryTranfunc.apply(query)
+      override def transform(query: Query): Query = queryTranfunc.apply(query)
+    }
+    val docFunc  = new QueryAugmenter{
+      override def apply(query: Query, documents: util.List[Document]): Query =queryDocfun.apply(query,documents)  //queryDocFunc.apply(query, documents)
+      override def augment(query: Query, documents: util.List[Document]): Query =queryDocFunc.apply(query, documents)
+    }
+    val rag3 = RetrievalAugmentationAdvisor.builder()
+              .documentRetriever(documentRetriever)
+              .queryTransformers(tranFunc)
+              .queryAugmenter(docFunc)
+              .build
+    println("rag2  will invoke the vector store")
+    val rag2 = RetrievalAugmentationAdvisor.builder()
       .documentRetriever(documentRetriever)
-      .queryTransformers(queryTranfun.asInstanceOf[QueryTransformer])
-      .queryAugmenter(queryDocfun.asInstanceOf[QueryAugmenter])
+      .queryTransformers(queryTranfunc)
+      .queryAugmenter(queryDocFunc)
       .build
-    
+
+    //    val rag = RetrievalAugmentationAdvisor.builder()
+    //      .documentRetriever(documentRetriever)
+    //      .queryTransformers(queryTranfun.asInstanceOf[QueryTransformer])
+    //      .queryAugmenter(queryDocfun.asInstanceOf[QueryAugmenter])
+    //      .build
+
 //    val rag = RetrievalAugmentationAdvisor.builder()
 //      .documentRetriever(documentRetriever)
 //      .queryTransformers((q: Query) => queryTranfunc(q))
 //      .queryAugmenter((q, doc) => queryDocFunc(q, doc))
 //      .build
-    val answer = chatClient.prompt.user(question).advisors(rag).call.content
+    val answer = chatClient.prompt.user(question).advisors(rag3).call.content
     answer
   }
 
